@@ -5,12 +5,12 @@ import numpy as np
 import pandas as pd
 import torch
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import normalize
+from utils import normalize
 from tqdm.auto import trange, tqdm
 
 from DeepAnT_model import DeepAnT2d
 
-EPOCHS = 10
+EPOCHS = 2
 SAMPLE_STEPS = 10
 DEVICE = torch.device('cuda')
 
@@ -26,7 +26,7 @@ def make_samples(df):
     return X, Y
 
 
-df = pd.read_csv("hackathon_kpis_anonymised/ml_models_dataset_with_zone.csv")
+df = pd.read_csv("hackathon_kpis_anonymised/ml_models_dataset_with_zone_v2.csv")
 
 
 # df['timestamp'] = pd.to_datetime(df['timestamp'])
@@ -36,7 +36,7 @@ df = pd.read_csv("hackathon_kpis_anonymised/ml_models_dataset_with_zone.csv")
 def get_anomaly_score(model, data, true_next_value):
     model.eval()
     pred_next_value = model(data)
-    return (pred_next_value - true_next_value.to(model.device)).cpu().detach().numpy()
+    return (pred_next_value - true_next_value.to(model.device)).abs().cpu().detach().numpy()
 
 
 def model_for_dataframe(name, df):
@@ -84,7 +84,7 @@ def model_for_dataframe(name, df):
     anom_df = pd.DataFrame(anom_score, index=df.index, columns=df_model.columns)
     anom_df['timestamp'] = df['timestamp']
     anom_df['cell_name'] = df['cell_name']
-    anom_df.to_csv('preds/deepant_' + name + '.csv')
+    anom_df.to_pickle('preds/deepant_' + name + '.pkl')
 
     return model
 

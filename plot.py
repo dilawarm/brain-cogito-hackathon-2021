@@ -16,7 +16,7 @@ def plot_anomalies(df: pd.DataFrame, anomaly_idx: pd.DataFrame, plottable_cols, 
     )
     # FIXME: Clean up this loop
     for i, col in enumerate(plottable_cols):
-        anomaly_idx[col] = anomaly_idx[col].astype(float)
+        anomaly_idx.loc[:, col] = anomaly_idx[col].astype(float)
         fig.add_trace(go.Scatter(
             x=df['timestamp'],
             y=df[col],
