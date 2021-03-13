@@ -46,14 +46,17 @@ def plot_anomalies(df: pd.DataFrame, anomaly_idx: pd.DataFrame, plottable_cols, 
     return fig
 
 
-def plot_anomalies_by_cell(df: pd.DataFrame, anomaly_idx: pd.DataFrame, plottable_cols):
+def plot_anomalies_by_cell(df: pd.DataFrame, anomaly_idx: pd.DataFrame, plottable_cols, cell_names):
     """
     WARNING: Slow if you have many cells
     df: The full data frame
     anomaly_idx: a boolean data frame indicating where anomalies are located
     """
     groups = df.groupby('cell_name').groups
-    for cell_name, cell_idx in tqdm(groups.items()):
-        cell_df = df.loc[cell_idx]
-        cell_anomalies = anomaly_idx.loc[cell_idx]
-        plot_anomalies(cell_df, cell_anomalies, plottable_cols, cell_name)
+    for cell, cell_idx in tqdm(groups.items()):
+        if cell in cell_names:
+            cell_df = df.loc[cell_idx]
+            
+            cell_anomalies = anomaly_idx.loc[cell_idx]
+            
+            plot_anomalies(cell_df, cell_anomalies, plottable_cols, cell)

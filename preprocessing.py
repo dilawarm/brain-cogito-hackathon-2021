@@ -18,8 +18,10 @@ class DataLoader:
         
         # Split data into training and testing sets
         n = len(kpis)
-        idx_train = int(n*.7)
-        idx_val = idx_train + int(n*.15)
+        #idx_train = int(n*.7)
+        idx_train = int(n)
+        idx_val = idx_train
+        #idx_val += int(n*.15)
         train = kpis[:idx_train]
         val = kpis[idx_train:idx_val]
         test = kpis[idx_val:]
@@ -31,7 +33,7 @@ class DataLoader:
 class DataPreProcessor:
 
     # preprocess preprocesses the dataset into a format most of the anomaly-models wants it to be 
-    def process_from_path(path='data/kpis_cleaned_notonehot_median.csv', cluster_data_path='data/cell_clusters.csv'):
+    def process_from_path(self, path='data/kpis_cleaned_notonehot_median.csv', cluster_data_path='data/cell_clusters.csv'):
         df = pd.read_csv(path)
         drop_columns = ['tech', 'freq', 'site', 'sector', 'Unnamed: 0']
         df.drop(columns=drop_columns, inplace=True)
