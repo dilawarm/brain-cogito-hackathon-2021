@@ -5,12 +5,14 @@ import numpy as np
 import pandas as pd
 import torch
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import normalize
 from tqdm.auto import trange, tqdm
 
 from DeepAnT_model import DeepAnT2d
 
 EPOCHS = 10
 SAMPLE_STEPS = 10
+DEVICE = torch.device('cuda')
 
 
 def make_samples(df):
@@ -45,7 +47,7 @@ def model_for_dataframe(name, df):
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, random_state=42, shuffle=False)
 
     n_features = X_train.shape[-1]
-    model = DeepAnT2d(SAMPLE_STEPS, n_features).to('cuda')
+    model = DeepAnT2d(SAMPLE_STEPS, n_features).to(DEVICE)
     try:
         paths = [
             os.path.join('models', path)
@@ -53,22 +55,29 @@ def model_for_dataframe(name, df):
             if name in path and 'deepant' in path
         ]
         model.load_state_dict(torch.load(max(paths)))
-    except RuntimeError as e:
+    except Exception as e:
         print(e)
         print('Cannot load model, training it instead')
         for epoch in trange(EPOCHS):
             train_loss = model.train_epoch(X_train, Y_train, verbose=name == 'all')
+            if name == 'all':
+                model = model.cpu()
             eval_loss = model.evaluate(X_test, Y_test)
             if name == 'all':
+                model = model.to(DEVICE)
                 print('Epoch {0} done\t train_loss={1} \t eval_loss={2}'.format(epoch, train_loss, eval_loss))
             torch.save(model.state_dict(),
                        'models/deepant_{0}_epoch_{1}__eval_loss_{2}.pth'.format(name, epoch, eval_loss))
 
+    if name == 'all':
+        model = model.cpu()
     anom_score = get_anomaly_score(model, X, Y)
     plt.plot(df.index[10:], np.linalg.norm(anom_score, axis=1))
     plt.title('Anomaly scores from ' + name)
     plt.savefig('figs/deepant_' + name + '.png')
     plt.close()
+
+    anom_score = normalize(anom_score)
 
     anom_score = np.concatenate((np.zeros((SAMPLE_STEPS, n_features)), anom_score))
 

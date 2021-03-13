@@ -16,7 +16,10 @@ class DeepAnT(torch.nn.Module):
 
     @property
     def device(self):
-        return self.conv1d_1_layer.bias.get_device()
+        device = self.conv1d_1_layer.bias.get_device()
+        if device >= 0:
+            return device
+        return torch.device('cpu')
 
     def train_epoch(self, X_train: torch.Tensor, Y_train: torch.Tensor, verbose=True):
         train_data = torch.utils.data.TensorDataset(X_train, Y_train)
