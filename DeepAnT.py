@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from tqdm.auto import tqdm, trange
 from DeepAnT_model import DeepAnT
 
-EPOCHS = 11
+EPOCHS = 10
 SAMPLE_STEPS = 10
 
 def make_samples(df):
@@ -19,7 +19,8 @@ def make_samples(df):
         Y[i-SAMPLE_STEPS, :] = nda[i]
     return X, Y
 
-df = pd.read_csv("hackathon_kpis_anonymised/hackathon_kpis_anonymised.csv")
+
+df = pd.read_csv("hackathon_kpis_anonymised.csv")
 df = df[df['cell_name'] == '00_11Z']
 df = df.fillna(df.median(), axis='index')
 df = df.drop(columns='cell_name')
@@ -31,7 +32,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(
     X, Y, test_size=0.25, random_state=42, shuffle=False)
 
 
-DEVICE = torch.device('cpu')
+DEVICE = torch.device('cuda')
 model = DeepAnT(SAMPLE_STEPS, len(df.columns)).to(DEVICE)
 criterion = torch.nn.MSELoss(reduction='mean')
 optimizer = torch.optim.Adam(list(model.parameters()), lr=1e-5)
@@ -44,10 +45,12 @@ train_loader = torch.utils.data.DataLoader(
     dataset=train_data, batch_size=32, shuffle=True)
 
 try:
-    model.load_state_dict(torch.load('models/epoch_10__eval_loss_0.10649964213371277.pth'))
-except:
+    model.load_state_dict(torch.load('models/epoch_8__eval_loss_0.0008937545935623348.pth'))
+except Exception as e:
+    print(e)
+    print('Can\'t load state dict, training model')
     for epoch in trange(EPOCHS):
-        model.train()    
+        model.train()
         loss_sum = 0.0
         steps = 0
         for x, y in tqdm(train_loader):
@@ -75,10 +78,15 @@ except:
 
 def get_anomaly_score(model, data, true_next_value):
     model.eval()
-    pred_next_value = model.cpu()(torch.from_numpy(data.astype(np.float32)))
-    return torch.norm(pred_next_value - true_next_value, dim=1).cpu().detach().numpy()
+    pred_next_value = model(data.to(DEVICE))
+    return torch.norm(pred_next_value - true_next_value.to(DEVICE), dim=1).cpu().detach().numpy()
 
 
-anom_score = get_anomaly_score(model, X, torch.from_numpy(Y.astype(np.float32)))
+anom_score = get_anomaly_score(
+    model,
+    torch.from_numpy(X.astype(np.float32)),
+    torch.from_numpy(Y.astype(np.float32))
+)
 plt.plot(df.index[10:], anom_score)
+plt.title('Anomaly scores on FULL dataset')
 plt.show()
