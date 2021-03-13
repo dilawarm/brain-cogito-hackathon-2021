@@ -7,7 +7,7 @@ class HierarchicalClustering:
     def __init__(self, df: pd.DataFrame):
         self.df = df
 
-    def from_path(path):
+    def from_path(self, path):
         df = pd.read_csv(path)
         df.set_index(keys="cell_name", inplace=True)
         return HierarchicalClustering(df)
