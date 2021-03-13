@@ -7,6 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1OBWkxTLy7CuzeEfLS7dvM-MB3Dw3m3GA
 """
 
+from typing import List
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
@@ -19,7 +20,7 @@ from sklearn.decomposition import PCA
 import warnings
 warnings.simplefilter('ignore')
 
-df = pd.read_csv('hackathon_kpis_anonymised.csv', parse_dates=['timestamp'])
+df = pd.read_csv('./data/hackathon_kpis_anonymised.csv', parse_dates=['timestamp'])
 
 df.head()
 
@@ -89,3 +90,5 @@ def find_anomalies(data, cell_name, n_pca):
       anomaly_timestamps.append(list(df_pca.index[best_order:])[i])
   
   return anomaly_timestamps
+
+  
