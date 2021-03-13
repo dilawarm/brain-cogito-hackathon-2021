@@ -2,10 +2,10 @@ import pandas as pd
 
 class DataLoader:
 
-    def __init__(path):
+    def __init__(self, path):
         self.path = path
 
-    def load() -> pd.DataFrame:
+    def load(self) -> pd.DataFrame:
         path = self.path
         print('Loading from path:', path)
         
