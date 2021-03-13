@@ -7,10 +7,12 @@ class DeepAnT(torch.nn.Module):
         Model : Class for DeepAnT model
     """
 
-    def __init__(self, time_steps, n_features):
+    def __init__(self):
         super(DeepAnT, self).__init__()
-        self.criterion = torch.nn.MSELoss(reduction='mean')
+
+    def _post_init(self):
         self.optimizer = torch.optim.Adam(list(self.parameters()), lr=1e-5)
+        self.criterion = torch.nn.MSELoss(reduction='mean')
 
     @property
     def device(self):
@@ -42,7 +44,7 @@ class DeepAnT(torch.nn.Module):
 
 class DeepAnT2d(DeepAnT):
     def __init__(self, time_steps, n_features):
-        super().__init__(time_steps, n_features)
+        super().__init__()
         self.conv1d_1_layer = torch.nn.Conv1d(
             in_channels=time_steps, out_channels=16, kernel_size=3)
         self.relu_1_layer = torch.nn.ReLU()
@@ -56,6 +58,7 @@ class DeepAnT2d(DeepAnT):
         self.relu_3_layer = torch.nn.ReLU()
         self.dropout_layer = torch.nn.Dropout(p=0.25)
         self.dense_2_layer = torch.nn.Linear(n_features * 2, n_features)
+        self._post_init()
 
     def forward(self, x):
         x = x.to(self.device)
@@ -78,7 +81,7 @@ class DeepAnT2d(DeepAnT):
 
 class DeepAnT3d(DeepAnT):
     def __init__(self, time_steps, n_features):
-        super().__init__(time_steps, n_features)
+        super().__init__()
         self.conv1d_1_layer = torch.nn.Conv1d(
             in_channels=time_steps, out_channels=16, kernel_size=3)
         self.relu_1_layer = torch.nn.ReLU()
@@ -92,6 +95,7 @@ class DeepAnT3d(DeepAnT):
         self.relu_3_layer = torch.nn.ReLU()
         self.dropout_layer = torch.nn.Dropout(p=0.25)
         self.dense_2_layer = torch.nn.Linear(n_features * 2, n_features)
+        self._post_init()
         raise NotImplementedError()
 
     def forward(self, x):
