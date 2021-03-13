@@ -24,23 +24,30 @@ These files can be found at  [Telenor's](https://drive.google.com/drive/folders/
 All actions for this step can be found in the preprocessing.py file located at root folder. 
 
 ```python
-from preprocessing import DataLoader, DataPreProcessor
+from preprocessing import DataPreProcessor
+from hierarchical_clustering import HierarchicalClustering
+import pandas as pd
 
-data_loader = DataLoader()
+path_distance = 'data/relative_distance.csv'
+path_harc = 'data/cell_clusters.csv'
+
+# preprocessing the data for hierarchical clustering
+hiarc_df = HierarchicalClustering.from_path(path = path_distance).cluster_data().extract_cell_name_from_clusters()
+
+hiarc_df.to_csv(path_harc)
 
 path = 'data/hackathon_kpis_anonymised-1.csv'
 
-(train, test, val) = data_loader.load(path= path)
+# preprocessing by extracting each feature from the cell name. 
+# fixing the failure rates, for example 0 calls divided by 0 becomes NaN, this is now changed to 0.
+# Process path is using hierarchical clustering data from csv. 
 
-
-
-# using Bulder pattern to process data. 
-df = DataPreProcessor().read_file(read_kpis_path=path).extract_cell_name_data().fix_failure_rates().fetch_data()
+df = DataPreProcessor().read_file(read_kpis_path=path).extract_cell_name_data().fix_failure_rates().process_from_path(path_harc).fetch_data()
 
 print(df.head())
 
 ```
-
+The example above shows how to use every function in our arsenal to preprocess the data given for this assignment. 
 ### DeepAnT
 ### isolationForest
 ### STD

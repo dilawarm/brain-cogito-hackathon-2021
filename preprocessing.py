@@ -4,10 +4,10 @@ from tqdm import tqdm
 
 class DataLoader:
 
-    def __init__(path):
+    def __init__(self, path):
         self.path = path
 
-    def load() -> pd.DataFrame:
+    def load(self) -> pd.DataFrame:
         path = self.path
         print('Loading from path:', path)
         
@@ -20,8 +20,10 @@ class DataLoader:
         
         # Split data into training and testing sets
         n = len(kpis)
-        idx_train = int(n*.7)
-        idx_val = idx_train + int(n*.15)
+        #idx_train = int(n*.7)
+        idx_train = int(n)
+        idx_val = idx_train
+        #idx_val += int(n*.15)
         train = kpis[:idx_train]
         val = kpis[idx_train:idx_val]
         test = kpis[idx_val:]
@@ -52,7 +54,7 @@ class DataPreProcessor:
             return self
 
         df = self.df
-        drop_columns = ['tech', 'freq', 'site', 'sector', 'Unnamed: 0']
+        drop_columns = ['tech', 'freq', 'site', 'sector']
         df.drop(columns=drop_columns, inplace=True)
 
         # Onehot-encode
