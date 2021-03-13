@@ -45,3 +45,5 @@ score = model.score_samples(data)
 # Plot
 plt.scatter(df.index, score)
 plt.show()
+
+
