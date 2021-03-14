@@ -1,4 +1,4 @@
-#  Telenor - Unsupervised  Anomaly Detection for Telenor Network Data
+#  Telenor x SINTEF x Brain - AI Hackathon - Unsupervised Anomaly Detection for Telenor Network Data - 1st place solution :1st_place_medal:
 ## Hackathon 2021 - Group 5 
 
 
