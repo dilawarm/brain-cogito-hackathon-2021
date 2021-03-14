@@ -14,7 +14,7 @@ You will also need to have software installed to run and execute a [Jupyter Note
 If you do not have Python installed yet, it is highly recommended that you install the [Anaconda](https://www.anaconda.com/download/) distribution of Python, which already has the above packages and more included. 
 
 ## Usage
-To run this project you'll need to have access to 
+To run this project you'll need to have access to the dataset files  hackathon_kpis_anonymised.csv and relative_distance.csv. All code to recreate our results are in this repository. 
 
 ```python
 'hackathon_kpis_anonymised.csv'
