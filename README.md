@@ -63,9 +63,9 @@ print(df.head())
 ```
 The example above shows how to use every function in our arsenal to preprocess the data given for this assignment. 
 ### DeepAnT
-To run DeepAnT is pretty easy. Go in the jupyter notebook : DeepAnt.ipynb file and run each cell from top to down.
+To run DeepAnT is pretty easy. Configure whether you want to train on `cuda` or `cpu` at the top of `DeepAnT.py`, then run the file.
 ```bash
-jupyter notebook DeepAnt.ipynb
+python DeepAnt.py
 ```
 ### isolationForest
 To run isolationForest is pretty easy. Go in the jupyter notebook : isolationForest.ipynb file and run each cell from top to down.
