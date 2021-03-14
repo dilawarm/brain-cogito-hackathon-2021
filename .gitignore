@@ -1,4 +1,5 @@
 /**.csv
+/**.DS_STORE
 *.csv
 data
 __pycache__
