@@ -9,7 +9,9 @@ In this project we used requirements.txt file. To install the packages please wr
 cd brain-cogito-hackathon-2021/
 pip install -r requirements.txt
 ```
+You will also need to have software installed to run and execute a [Jupyter Notebook](http://jupyter.org/install.html).
 
+If you do not have Python installed yet, it is highly recommended that you install the [Anaconda](https://www.anaconda.com/download/) distribution of Python, which already has the above packages and more included. 
 
 ## Usage
 To run this project you'll need to have access to 
@@ -49,12 +51,17 @@ print(df.head())
 ```
 The example above shows how to use every function in our arsenal to preprocess the data given for this assignment. 
 ### DeepAnT
+To run DeepAnT is pretty easy. Go in the jupyter notebook : DeepAnt.ipynb file and run each cell from top to down.
+```bash
+jupyter notebook DeepAnt.ipynb
+```
 ### isolationForest
+To run isolationForest is pretty easy. Go in the jupyter notebook : isolationForest.ipynb file and run each cell from top to down.
+```bash
+jupyter notebook isolationForest.ipynb
+```
 ### STD
-
-## Contributing
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+To run STD is pretty easy. Go in the jupyter notebook : std-baseline.ipynb file and run each cell from top to down.
+```bash
+jupyter notebook std-baseline.ipynb
+```
