@@ -22,12 +22,15 @@ class StdDetector:
         self._stds = df[self.cols].std()
 
     def detect(self, df):
-        if self._means is None: raise RuntimeError('Must train first!')
+        if self._means is None:
+            raise RuntimeError("Must train first!")
 
         lower = self._means - self.tolerance * self._stds
         upper = self._means + self.tolerance * self._stds
 
         anomalies = {}
         for col_name in self.cols:
-            anomalies[col_name] = (df[col_name] <= lower[col_name]) | (df[col_name] >= upper[col_name])
+            anomalies[col_name] = (df[col_name] <= lower[col_name]) | (
+                df[col_name] >= upper[col_name]
+            )
         return pd.DataFrame(anomalies).astype(float)

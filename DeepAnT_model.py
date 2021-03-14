@@ -4,7 +4,7 @@ from tqdm.auto import tqdm
 
 class DeepAnT(torch.nn.Module):
     """
-        Model : Class for DeepAnT model
+    Model : Class for DeepAnT model
     """
 
     def __init__(self):
@@ -12,19 +12,20 @@ class DeepAnT(torch.nn.Module):
 
     def _post_init(self):
         self.optimizer = torch.optim.Adam(list(self.parameters()), lr=1e-5)
-        self.criterion = torch.nn.MSELoss(reduction='mean')
+        self.criterion = torch.nn.MSELoss(reduction="mean")
 
     @property
     def device(self):
         device = self.conv1d_1_layer.bias.get_device()
         if device >= 0:
             return device
-        return torch.device('cpu')
+        return torch.device("cpu")
 
     def train_epoch(self, X_train: torch.Tensor, Y_train: torch.Tensor, verbose=True):
         train_data = torch.utils.data.TensorDataset(X_train, Y_train)
         train_loader = torch.utils.data.DataLoader(
-            dataset=train_data, batch_size=32, shuffle=True)
+            dataset=train_data, batch_size=32, shuffle=True
+        )
         self.train()
         loss_sum = 0.0
         steps = 0
@@ -49,11 +50,13 @@ class DeepAnT2d(DeepAnT):
     def __init__(self, time_steps, n_features):
         super().__init__()
         self.conv1d_1_layer = torch.nn.Conv1d(
-            in_channels=time_steps, out_channels=16, kernel_size=3)
+            in_channels=time_steps, out_channels=16, kernel_size=3
+        )
         self.relu_1_layer = torch.nn.ReLU()
         self.maxpooling_1_layer = torch.nn.MaxPool1d(kernel_size=2)
         self.conv1d_2_layer = torch.nn.Conv1d(
-            in_channels=16, out_channels=16, kernel_size=3)
+            in_channels=16, out_channels=16, kernel_size=3
+        )
         self.relu_2_layer = torch.nn.ReLU()
         self.maxpooling_2_layer = torch.nn.MaxPool1d(kernel_size=2)
         self.flatten_layer = torch.nn.Flatten()
@@ -75,7 +78,10 @@ class DeepAnT2d(DeepAnT):
         try:
             x = self.dense_1_layer(x)
         except RuntimeError as e:
-            print('Shape error, please update according to the dataset you\'re using', x.shape)
+            print(
+                "Shape error, please update according to the dataset you're using",
+                x.shape,
+            )
             raise e
         x = self.relu_3_layer(x)
         x = self.dropout_layer(x)
@@ -86,11 +92,13 @@ class DeepAnT3d(DeepAnT):
     def __init__(self, time_steps, n_features):
         super().__init__()
         self.conv1d_1_layer = torch.nn.Conv1d(
-            in_channels=time_steps, out_channels=16, kernel_size=3)
+            in_channels=time_steps, out_channels=16, kernel_size=3
+        )
         self.relu_1_layer = torch.nn.ReLU()
         self.maxpooling_1_layer = torch.nn.MaxPool1d(kernel_size=2)
         self.conv1d_2_layer = torch.nn.Conv1d(
-            in_channels=16, out_channels=16, kernel_size=3)
+            in_channels=16, out_channels=16, kernel_size=3
+        )
         self.relu_2_layer = torch.nn.ReLU()
         self.maxpooling_2_layer = torch.nn.MaxPool1d(kernel_size=2)
         self.flatten_layer = torch.nn.Flatten()
@@ -113,7 +121,10 @@ class DeepAnT3d(DeepAnT):
         try:
             x = self.dense_1_layer(x)
         except RuntimeError as e:
-            print('Shape error, please update according to the dataset you\'re using', x.shape)
+            print(
+                "Shape error, please update according to the dataset you're using",
+                x.shape,
+            )
             raise e
         x = self.relu_3_layer(x)
         x = self.dropout_layer(x)
