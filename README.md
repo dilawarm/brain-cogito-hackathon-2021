@@ -9,6 +9,18 @@ In this project we used requirements.txt file. To install the packages please wr
 cd brain-cogito-hackathon-2021/
 pip install -r requirements.txt
 ```
+The requirements.txt file includes the following Python libraries installed::
+
+- [NumPy](http://www.numpy.org/)
+- [Pandas](http://pandas.pydata.org/)
+- [matplotlib](http://matplotlib.org/)
+- [scikit-learn](http://scikit-learn.org/stable/)
+- [pandas-profiling](https://pypi.org/project/pandas-profiling/)
+- [plotly](https://pypi.org/project/plotly/)
+- [torch](https://pypi.org/project/torch/)
+- [tqdm](https://pypi.org/project/tqdm/)
+- [statsmodels](https://pypi.org/project/statsmodels/)
+
 You will also need to have software installed to run and execute a [Jupyter Notebook](http://jupyter.org/install.html).
 
 If you do not have Python installed yet, it is highly recommended that you install the [Anaconda](https://www.anaconda.com/download/) distribution of Python, which already has the above packages and more included. 
