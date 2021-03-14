@@ -30,4 +30,4 @@ class StdDetector:
         anomalies = {}
         for col_name in self.cols:
             anomalies[col_name] = (df[col_name] <= lower[col_name]) | (df[col_name] >= upper[col_name])
-        return pd.DataFrame(anomalies)
+        return pd.DataFrame(anomalies).astype(float)
